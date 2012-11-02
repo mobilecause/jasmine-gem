@@ -2,7 +2,11 @@ class Jasmine::AssetPipelineMapper
 
   def self.context
     context = ::Rails.application.assets.context_class
-    context.extend(::Sprockets::Helpers::IsolatedHelper)
+    begin
+      context.extend(::Sprockets::Helpers::IsolatedHelper)
+    rescue NameError => e
+      puts "#{__FILE__}:#{__LINE__} #{e}.  Proceeding without it (probably okay for Rails 3.1, otherwise a bug)."
+    end
     context.extend(::Sprockets::Helpers::RailsHelper)
   end
 
